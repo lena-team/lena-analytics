@@ -1,17 +1,7 @@
 /* eslint-env mocha */
 const { assert } = require('chai');
-const cassandra = require('cassandra-driver');
-const controller = require('../database/controller');
-
-const keyspace = process.env.KEYSPACE || 'eventstore';
-let contactPoints;
-if (process.env.CONTACTPOINTS) {
-  contactPoints = process.env.CONTACTPOINTS.split(',');
-} else {
-  contactPoints = ['104.237.154.8'];
-}
-
-const client = new cassandra.Client({ contactPoints, keyspace });
+const controller = require('../controllers');
+const { client } = require('../database');
 
 describe('Event API Tests', () => {
   beforeEach((done) => {
@@ -29,12 +19,12 @@ describe('Event API Tests', () => {
       };
 
       const eventTextType = {
-        testfield1: 'test1',
-        testfield2: 'test2',
-        testfield3: 'test3',
+        harry: 'potter',
+        ron: 'weasley',
+        leo: 'leung',
       };
 
-      return controller.insertEvent('lol1', eventDateType, eventTextType)
+      return controller.event.insertEvent('Wingardium Leviosa', eventDateType, eventTextType)
         .then((results) => {
           assert(results.info.warnings === undefined);
         });
@@ -50,13 +40,13 @@ describe('Event API Tests', () => {
       };
 
       const eventTextType = {
-        testfield1: 'test1',
-        testfield2: 'test2',
-        testfield3: 'test3',
+        harry: 'potter',
+        ron: 'weasley',
+        leo: 'leung',
       };
 
-      return controller.insertEvent('lol1', eventDateType, eventTextType)
-        .then(() => controller.findEvent('lol1', '2017-10-10'))
+      return controller.event.insertEvent('Wingardium Leviosa', eventDateType, eventTextType)
+        .then(() => controller.event.findEvent('Wingardium Leviosa', '2017-10-10'))
         .then((results) => {
           assert(results.rows.length === 1);
         });

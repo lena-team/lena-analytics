@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/index.js",
     "dev-start": "nodemon server/index.js",
-    "test": "mocha --reporter nyan"
+    "test": "mocha server/test --reporter nyan"
   },
   "repository": {
     "type": "git",
