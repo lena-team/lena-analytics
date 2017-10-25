@@ -4,8 +4,8 @@
   "description": "analytics service for lena",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
-    "dev-start": "nodemon server/index.js",
+    "start": "node server",
+    "dev-start": "nodemon server",
     "test": "mocha server/test --reporter nyan"
   },
   "repository": {
