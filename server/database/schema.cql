@@ -1,6 +1,6 @@
 DROP KEYSPACE IF EXISTS eventstore;
 
-CREATE KEYSPACE eventstore WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
+CREATE KEYSPACE eventstore WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy', 'datacenter1' : 3 };
 
 USE eventstore; 
 
