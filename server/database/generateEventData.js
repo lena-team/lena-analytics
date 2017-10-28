@@ -32,7 +32,7 @@ const generateBatchInsert = (repeatCount, eventType) => {
       query: 'INSERT INTO events (id, eventcreatedat, eventtype, eventdatetype, eventtexttype, eventinttype) VALUES (?, ?, ?, ?, ?, ?)',
       params: [
         uuid.v4(),
-        new Date().toISOString(),
+        new Date(new Date().getTime() + i).toISOString(),
         eventType,
         generatedData.date,
         generatedData.text,
