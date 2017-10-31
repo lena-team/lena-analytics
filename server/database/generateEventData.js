@@ -45,12 +45,6 @@ const generateBatchInsert = (repeatCount, eventType) => {
 };
 
 // generation script
-generateBatchInsert(1000, 'test')
-  .then((results) => {
-    console.log(results);
-    process.exit();
-  })
-  .catch((err) => {
-    console.log(err);
-    process.exit();
-  });
+setInterval(() => {
+  generateBatchInsert(20000, 'test');
+}, 5000);

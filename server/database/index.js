@@ -1,5 +1,6 @@
 const cassandra = require('cassandra-driver');
 const pg = require('pg');
+const elasticsearch = require('elasticsearch');
 
 // for cassandra
 const keyspace = process.env.KEYSPACE || 'eventstore';
@@ -15,6 +16,12 @@ const pgClient = new pg.Client({
   port: process.env.POSTGRESPORT || '5432',
 });
 
+// for elasticsearch
+const elasticClient = new elasticsearch.Client({
+  host: 'elastic:changeme@localhost:9200',
+  log: 'trace',
+});
+
 pgClient.connect();
 
-module.exports = { client, pgClient };
+module.exports = { client, pgClient, elasticClient };

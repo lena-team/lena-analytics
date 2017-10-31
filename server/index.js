@@ -14,7 +14,7 @@ app.get('/events', (req, res) => {
 
 app.get('/analytics', (req, res) => {
   controller.analytics.updateElastic()
-    .then(results => res.send(results))
+    .then(results => res.sendStatus(200))
     .catch(err => res.send(err));
 });
 

@@ -1,10 +1,11 @@
 const event = require('./event');
 const eventType = require('./eventType');
+const { elasticClient } = require('../database');
 
 const updateElastic = () => {
   const events = [];
   let finalResults = [];
-  let elasticData = '';
+  let elasticResults;
   return eventType.getEventTypes()
     .then((results) => {
       const eventPromise = [];
@@ -18,24 +19,24 @@ const updateElastic = () => {
     })
     .then((results) => {
       finalResults = results;
+      const elasticData = [];
       results.forEach((eventData) => {
-        console.log(eventData.rows.length);
         for (let i = 0; i < eventData.rows.length; i += 1) {
-          elasticData += JSON.Stringify({
+          elasticData.push({
             index: {
               _index: 'event',
-              _type: 'act',
-              _id: 0,
+              _type: eventData.rows[i].eventtype,
             },
           });
-          elasticData += '\n';
-          elasticData += JSON.Stringify(eventData.rows[i]);
-          elasticData += '\n';
+          elasticData.push(eventData.rows[i]);
         }
       });
-      console.log(elasticData);
+      return elasticClient.bulk({
+        body: elasticData,
+      });
     })
-    .then(() => {
+    .then((results) => {
+      elasticResults = results;
       const eventPromise1 = [];
       events.forEach((eventTT, index) => {
         eventPromise1.push(eventType.updateEventType(
@@ -45,11 +46,11 @@ const updateElastic = () => {
       });
       return Promise.all(eventPromise1);
     })
-    .then(() => {
-      console.log(elasticData);
-      return elasticData;
-    });
+    .then(() => elasticResults);
 };
 
 module.exports = { updateElastic };
 
+setInterval(() => {
+  updateElastic()
+}, 7000);
