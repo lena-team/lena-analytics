@@ -1,0 +1,9 @@
+DROP DATABASE IF EXISTS eventtypedb;
+
+CREATE DATABASE eventtypedb;
+
+CREATE TABLE eventtype (
+  id  SERIAL,
+  eventName TEXT PRIMARY KEY,
+  endTime TIMESTAMP WITH TIME ZONE
+);
