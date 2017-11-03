@@ -1,0 +1,80 @@
+version: '3'
+services:
+  eventstore_seed:
+    image: cassandra:latest
+    ports:
+      - '7000-7001:7000-7001'
+      - '7199:7199'
+      - '9042:9042'
+      - '9160:9160'
+    restart: always
+    deploy:
+      restart_policy: 
+        condition: any
+      mode: global
+    networks:
+      - cassandra_network
+
+  eventstore_node:
+    image: cassandra:latest
+    links:
+      - eventstore_seed
+    environment:    
+      - CASSANDRA_SEEDS=eventstore_seed
+    depends_on:
+      - eventstore_seed
+    restart: always
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+      replicas: 2
+    networks:
+      - cassandra_network
+
+  eventtypedb:
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: nyancat
+    networks:
+      - postgres_network
+
+  pgadmin:
+    image: fenglc/pgadmin4
+    links:
+      - 'eventtypedb:postgres'
+    restart: always
+    ports:
+      - '5050:5050'
+    networks:
+      - postgres_network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+    restart: always
+    ports:
+      - '9200:9200'
+    networks:
+      - elk_network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.6.3
+    links:
+      - elasticsearch
+    restart: always
+    ports:
+      - '5601:5601'
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk_network
+networks:
+  cassandra_network:
+    driver: bridge
+  elk_network:
+    driver: bridge
+  postgres_network:
+    driver: bridge
