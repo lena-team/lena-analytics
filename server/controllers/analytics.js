@@ -52,5 +52,5 @@ const updateElastic = () => {
 module.exports = { updateElastic };
 
 setInterval(() => {
-  updateElastic()
+  updateElastic();
 }, 7000);

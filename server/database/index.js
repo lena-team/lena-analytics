@@ -19,7 +19,6 @@ const pgClient = new pg.Client({
 // for elasticsearch
 const elasticClient = new elasticsearch.Client({
   host: 'elastic:changeme@localhost:9200',
-  log: 'trace',
 });
 
 pgClient.connect();
