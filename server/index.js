@@ -1,5 +1,6 @@
 const express = require('express');
 const controller = require('./controllers');
+const { sqs } = require('./config');
 
 const app = express();
 const port = process.env.PORT || 1337;

@@ -20,6 +20,7 @@ const findEvent = (eventType, fromEventTime) => {
   return client.execute(query, params, { prepare: true });
 };
 
+
 module.exports = {
   insertEvent,
   findEvent,
