@@ -63,7 +63,9 @@ const updateElastic = () => {
       return updateEventTypeTime(events, eventsDataArray);
     })
     .then(() => elasticResults)
-    .catch(err => console.log(err));
+    .catch((err) => {
+      throw new Error(err);
+    });
 };
 
 module.exports = { updateElastic };
